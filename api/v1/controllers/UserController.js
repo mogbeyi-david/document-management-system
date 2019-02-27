@@ -1,5 +1,6 @@
 import {User as UserModel} from '../../../models';
 
+
 class UserController {
 
 }
