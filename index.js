@@ -2,6 +2,8 @@
 import mongoose from 'mongoose';
 import 'dotenv/config';
 import express from 'express';
+import bodyParser from 'body-parser';
+import morgan from 'morgan'
 
 // Declare environment variables
 const username = process.env.USERNAME;
@@ -21,6 +23,21 @@ mongoose.connect(connectionString, {useNewUrlParser: true})
   .catch((error) => {
     console.log(error);
   });
+
+// Use middlewares
+
+// => parse application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({ extended: false }));
+
+// => parse application/json
+app.use(bodyParser.json());
+
+// => Use morgan for logging
+app.use(morgan('combined'));
+
+app.use(express.json());
+
+// End of Middlewares
 
 // Listen on PORT
 app.listen(PORT, () => {
