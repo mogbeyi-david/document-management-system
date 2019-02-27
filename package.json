@@ -4,6 +4,7 @@
   "description": "The checkpoint three (3) for the decagon curriculum",
   "main": "app.js",
   "scripts": {
+    "start": "nodemon --exec babel-node index.js",
     "test": "npm test"
   },
   "keywords": [
