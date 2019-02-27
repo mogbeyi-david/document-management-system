@@ -25,6 +25,13 @@ const userSchema = new Schema({
     required: true,
     default: 'REGULAR'
   },
+  password: {
+    type: String,
+    required: true,
+    minlength: 6,
+    maxlength: 255
+  },
+
   createdAt: {
     type: Date,
     required: true,
