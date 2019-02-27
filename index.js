@@ -9,11 +9,12 @@ if (process.env.ENVIRONMENT === 'TESTING') database = process.env.TEST_DATABASE;
 const PORT = process.env.PORT || 3000;
 const app = express();
 
-const connectionString = `mongodb://${username}:${password}@ds145704.mlab.com:45704/${database}`;
+const connectionString = `mongodb://${username}:${password}@ds255005.mlab.com:55005/${database}`;
+
 
 mongoose.connect(connectionString, {useNewUrlParser: true})
   .then(() => {
-    return true
+    console.log('Connected to remote DB successfully')
   })
   .catch((error) => {
     console.log(error)
