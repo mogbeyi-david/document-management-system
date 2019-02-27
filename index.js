@@ -1,9 +1,10 @@
 // Pull in dependencies
+import 'babel-polyfill';
 import mongoose from 'mongoose';
 import 'dotenv/config';
 import express from 'express';
 import bodyParser from 'body-parser';
-import morgan from 'morgan'
+import morgan from 'morgan';
 
 // Declare environment variables
 const username = process.env.USERNAME;
@@ -27,7 +28,7 @@ mongoose.connect(connectionString, {useNewUrlParser: true})
 // Use middlewares
 
 // => parse application/x-www-form-urlencoded
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({extended: false}));
 
 // => parse application/json
 app.use(bodyParser.json());
@@ -40,10 +41,10 @@ app.use(express.json());
 // End of Middlewares
 
 // Listen on PORT
-app.listen(PORT, () => {
+const server = app.listen(PORT, () => {
   console.log(`App is running on port: ${PORT}`);
 });
 
 // Export app
-export default app;
+export default server
 
