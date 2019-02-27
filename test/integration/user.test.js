@@ -1,24 +1,26 @@
-import app from '../../index';
+import 'babel-polyfill';
 import supertest from 'supertest';
 import UserModel from '../../models/user';
-import UserController from '../../api/v1/controllers';
+import {User as UserController} from '../../api/v1/controllers';
+import server from '../../index'
 
-let server;
+let app;
 
 describe('/api/users', () => {
 
   beforeEach(() => {
-    server = require('../../index');
+    app = server
   });
 
-  afterEach(async () => {
-    server.close();
-    await UserModel.remove({});
+  afterEach(async (done) => {
+    app.close();
+    await UserModel.deleteMany({});
+    done();
   });
 
-  describe('Testing the isUserUnique function', ()=>{
+  describe('Testing the isUserUnique function', () => {
     // Add test case for the isUserUnique() function
-    it('isUserUnique() => it should return true if the user is unique', async () => {
+    it('isUserUnique() => it should return true if the user is unique', async (done) => {
       // First, we seed the database with two random users
       await UserModel.collection.insertMany([
         {
@@ -47,12 +49,13 @@ describe('/api/users', () => {
       };
 
       // Make a call to the isUserUnique method on the payload to check if the user is really unique
-      const result = UserController.isUserUnique(payload);
+      const result = await UserController.isUserUnique(payload);
       expect(result).toBeTruthy();
-    });
+      done()
+    }, 30000);
 
     // Add test case for the isUserUnique() function
-    it('isUserUnique() => it should return false if the user is not unique', async () => {
+    it('isUserUnique() => it should return false if the user is not unique', async (done) => {
       // First, we seed the database with two random users
       await UserModel.collection.insertMany([
         {
@@ -79,8 +82,9 @@ describe('/api/users', () => {
         role: 'REGULAR',
         password: 'testpassword@12345'
       };
-      const result = UserController.isUserUnique(payload);
+      const result = await UserController.isUserUnique(payload);
       expect(result).toBeFalsy();
-    });
-  })
+      done();
+    }, 30000);
+  });
 });
