@@ -16,10 +16,10 @@ const app = express();
 const connectionString = `mongodb://${username}:${password}@ds255005.mlab.com:55005/${database}`;
 mongoose.connect(connectionString, {useNewUrlParser: true})
   .then(() => {
-    console.log('Connected to remote DB successfully')
+    console.log('Connected to remote DB successfully');
   })
   .catch((error) => {
-    console.log(error)
+    console.log(error);
   });
 
 // Listen on PORT
