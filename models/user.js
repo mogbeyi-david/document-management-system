@@ -2,6 +2,7 @@ import mongoose from 'mongoose';
 
 const Schema = mongoose.Schema;
 
+// Define the user schema for creating the model
 const userSchema = new Schema({
   firstname: {
     required: true,
@@ -36,6 +37,8 @@ const userSchema = new Schema({
   }
 });
 
+//Create the model
 const User = mongoose.model('User', userSchema);
 
+//Export the user model
 export default User;
