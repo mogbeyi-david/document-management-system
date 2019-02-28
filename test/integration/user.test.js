@@ -1,7 +1,7 @@
 import 'babel-polyfill';
 import request from 'supertest';
 import UserModel from '../../models/user';
-import {UserController} from '../../api/v1/controllers';
+import {isUserUnique} from '../../api/v1/controllers/UserController';
 import server from '../../index';
 
 let app;
@@ -49,7 +49,7 @@ describe('/api/users', () => {
       };
 
       // Make a call to the isUserUnique method on the payload to check if the user is really unique
-      const result = await UserController.isUserUnique(payload);
+      const result = await isUserUnique(payload);
       expect(result).toBeTruthy();
       done();
     }, 30000);
@@ -82,7 +82,7 @@ describe('/api/users', () => {
         role: 'REGULAR',
         password: 'testpassword@12345'
       };
-      const result = await UserController.isUserUnique(payload);
+      const result = await isUserUnique(payload);
       expect(result).toBeFalsy();
       done();
     }, 30000);
