@@ -98,12 +98,14 @@ describe('/api/users', () => {
         password: 'testpassword@12345'
       };
       const response = await request(server)
-        .post('/api/v1/users/store')
+        .post('/api/v1/user/store')
         .send(payload);
 
       expect(response).not.toBeNull();
       expect(response.status).toBe(400);
       expect(response.body).toHaveProperty('message');
+      expect(response.body).toHaveProperty('data');
+      expect(response.body.data).toMatchObject(payload);
     }, 30000);
   });
 });
