@@ -16,8 +16,3 @@ exports.store = function (req, res) {
       .send({message: error.details[0].message, data: value});
   }
 };
-
-// const User = new UserController();
-// export {
-//   User
-// };

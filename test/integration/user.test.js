@@ -1,7 +1,7 @@
 import 'babel-polyfill';
 import request from 'supertest';
 import UserModel from '../../models/user';
-import {userController as UserController} from '../../api/v1/controllers';
+import {UserController} from '../../api/v1/controllers';
 import server from '../../index';
 
 let app;
@@ -104,6 +104,6 @@ describe('/api/users', () => {
       expect(response).not.toBeNull();
       expect(response.status).toBe(400);
       expect(response.body).toHaveProperty('message');
-    });
+    }, 30000);
   });
 });
