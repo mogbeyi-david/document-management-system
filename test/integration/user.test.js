@@ -1,7 +1,7 @@
 import 'babel-polyfill';
 import request from 'supertest';
 import UserModel from '../../models/user';
-import {User as UserController} from '../../api/v1/controllers';
+import {userController as UserController} from '../../api/v1/controllers';
 import server from '../../index';
 
 let app;

@@ -6,6 +6,8 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import morgan from 'morgan';
 
+import {userRouter} from './api/v1/routes';
+
 // Declare environment variables
 const username = process.env.USERNAME;
 const password = process.env.PASSWORD;
@@ -38,6 +40,8 @@ app.use(morgan('combined'));
 
 app.use(express.json());
 
+app.use('/api/v1/user', userRouter);
+
 // End of Middlewares
 
 // Listen on PORT
@@ -46,5 +50,5 @@ const server = app.listen(PORT, () => {
 });
 
 // Export app
-export default server
+export default server;
 
