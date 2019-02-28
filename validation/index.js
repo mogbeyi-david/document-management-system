@@ -1,6 +1,6 @@
-import user from './user'
+import validateUser from './user';
 
 
-export default {
-  user
-}
+export {
+  validateUser
+};
