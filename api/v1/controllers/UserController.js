@@ -23,7 +23,7 @@ exports.store = async function (req, res) {
   }
 
   // Check if the user already exists in the database
-  if (! await isUserUnique(req.body)) {
+  if (!await isUserUnique(req.body)) {
     return res.status(HttpStatus.BAD_REQUEST)
       .send({
         message: 'User already exists',
