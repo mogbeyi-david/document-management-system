@@ -6,19 +6,31 @@ import hasher from '../../../utils/hash';
 
 
 //Method to determine if an about-to-be-created user is unique, using the email in the payload
-exports.isUserUnique = async function (user) {
+async function isUserUnique(user) {
   const email = user.email;
   const existingUser = await UserModel.find({email: email});
   return existingUser.length <= 0;
-};
+}
 
 //Method to store the new user in the database
 exports.store = async function (req, res) {
+
+  // Check the payload for any improper data
   const {error, value} = validateUser(req.body);
   if (error) {
     return res.status(HttpStatus.BAD_REQUEST)
       .send({message: error.details[0].message, data: value});
   }
+
+  // Check if the user already exists in the database
+  if (!isUserUnique(req.body)) {
+    return res.status(HttpStatus.BAD_REQUEST)
+      .send({
+        message: 'User already exists',
+        data: req.body
+      });
+  }
+
 
   try {
     const newUser = new UserModel({
@@ -30,11 +42,16 @@ exports.store = async function (req, res) {
     });
     const result = await newUser.save();
     const response = _.pick(result, ['_id', 'firstname', 'lastname', 'email', 'role']);
-    res.status(HttpStatus.CREATED).send({
+    return res.status(HttpStatus.CREATED).send({
       message: 'User created successfully',
       data: response
     });
   } catch (exception) {
-    res.status(HttpStatus.INTERNAL_SERVER_ERROR).send(exception.message);
+    return res.status(HttpStatus.INTERNAL_SERVER_ERROR).send(exception.message);
   }
+};
+
+
+export {
+  isUserUnique
 };
