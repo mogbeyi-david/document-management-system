@@ -189,5 +189,38 @@ describe('/api/users', () => {
       }, 30000);
     });
 
+    describe('Logging in a user', () => {
+
+      // Write testcase for when the user did not enter an email or password
+      it('should return a 400 error if some data is missing in the payload', async () => {
+        const payload = {
+          email: 'testemail@gmail.com'
+        };
+        const response = await request(server)
+          .post('/api/v1/user/auth')
+          .send(payload);
+
+        expect(response).not.toBeNull();
+        expect(response.status).toBe(400);
+        expect(response.body).toHaveProperty('message');
+        expect(response.body).toHaveProperty('data');
+        expect(response.body.data).toMatchObject(payload);
+      }, 30000);
+
+      // it('should return a 404 error if no user is found for the payload', () => {
+      //
+      // }, 30000);
+      //
+      // it('should return a 400 error if the payload does not match any data', () => {
+      //
+      // }, 30000);
+      //
+      // it('should log in the user if the payload is authenticated and verified', () => {
+      //
+      // }, 30000);
+
+    });
+
   });
+
 });
