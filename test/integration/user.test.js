@@ -89,13 +89,33 @@ describe('/api/users', () => {
   });
 
   describe('/POST', () => {
-    // Write tests for the POST endpoint to create a new user
+    // Write tests for the POST endpoint to create a new user without a firstname
     it('should return a 400 error if user validation fails', async () => {
       const payload = {
         lastname: 'test lastname goes here',
         email: 'testemail@gmail.com',
         role: 'REGULAR',
         password: 'testpassword@12345'
+      };
+      const response = await request(server)
+        .post('/api/v1/user/store')
+        .send(payload);
+
+      expect(response).not.toBeNull();
+      expect(response.status).toBe(400);
+      expect(response.body).toHaveProperty('message');
+      expect(response.body).toHaveProperty('data');
+      expect(response.body.data).toMatchObject(payload);
+    }, 30000);
+
+    // Write tests for the POST endpoint to create a new user with a password of less than 6 characters
+    it('should return a 400 error if user validation fails', async () => {
+      const payload = {
+        firstname: 'test firstname goes here',
+        lastname: 'test lastname goes here',
+        email: 'testemail@gmail.com',
+        role: 'REGULAR',
+        password: 'test'
       };
       const response = await request(server)
         .post('/api/v1/user/store')
