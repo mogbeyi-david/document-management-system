@@ -127,6 +127,39 @@ describe('/api/users', () => {
       expect(response.body).toHaveProperty('data');
       expect(response.body.data).toMatchObject(payload);
     }, 30000);
+    it('should return a 400 error if user already exists', async () => {
+
+      await UserModel.collection.insertMany([
+        {
+          firstname: 'firstname goes here',
+          lastname: 'lastname goes here',
+          email: 'email@gmail.com',
+          password: 'password@12345'
+        },
+        {
+          firstname: 'another firstname goes here',
+          lastname: 'another lastname goes here',
+          email: 'anotheremail@gmail.com',
+          password: 'anotherpassword@12345'
+        }
+      ]);
+
+      const payload = {
+        firstname: 'test firstname goes here',
+        lastname: 'test lastname goes here',
+        email: 'email@gmail.com',
+        password: 'test@password'
+      };
+      const response = await request(server)
+        .post('/api/v1/user/store')
+        .send(payload);
+
+      expect(response).not.toBeNull();
+      expect(response.status).toBe(400);
+      expect(response.body).toHaveProperty('message', 'User already exists');
+      expect(response.body).toHaveProperty('data');
+      expect(response.body.data).toMatchObject(payload);
+    }, 30000);
 
     it('should return a 201 if the user details are of the correct format', async () => {
       const payload = {
