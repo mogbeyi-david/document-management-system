@@ -127,5 +127,24 @@ describe('/api/users', () => {
       expect(response.body).toHaveProperty('data');
       expect(response.body.data).toMatchObject(payload);
     }, 30000);
+
+    it('should return a 201 if the user details ', async () => {
+      const payload = {
+        firstname: 'test firstname goes here',
+        lastname: 'test lastname goes here',
+        email: 'testemail@gmail.com',
+        role: 'REGULAR',
+        password: 'test@password'
+      };
+      const response = await request(server)
+        .post('/api/v1/user/store')
+        .send(payload);
+
+      expect(response).not.toBeNull();
+      expect(response.status).toBe(201);
+      expect(response.body).toHaveProperty('message');
+      expect(response.body).toHaveProperty('data');
+      expect(response.body.data).toMatchObject(payload);
+    }, 30000);
   });
 });
