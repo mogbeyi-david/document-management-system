@@ -1,5 +1,5 @@
-import userController from './UserController'
+import {User as UserController} from './UserController';
 
 export {
-  userController
-}
+  UserController
+};
