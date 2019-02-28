@@ -1,12 +1,11 @@
 // Pull in dependencies
-import 'babel-polyfill';
 import mongoose from 'mongoose';
 import 'dotenv/config';
 import express from 'express';
 import bodyParser from 'body-parser';
 import morgan from 'morgan';
 
-import {userRouter} from './api/v1/routes';
+import {userRouter} from './api/v1';
 
 // Declare environment variables
 const username = process.env.USERNAME;
