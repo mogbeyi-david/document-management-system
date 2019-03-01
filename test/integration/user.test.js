@@ -240,10 +240,40 @@ describe('/api/users', () => {
         expect(response.body).toHaveProperty('data');
         expect(response.body.data).toMatchObject(payload);
       }, 30000);
-      //
-      // it('should return a 400 error if the payload does not match any data', () => {
-      //
-      // }, 30000);
+
+      it('should return a 404 error if the payload email is found but password not found', async () => {
+
+        await UserModel.collection.insertMany([
+          {
+            firstname: 'firstname goes here',
+            lastname: 'lastname goes here',
+            email: 'email@gmail.com',
+            role: 'REGULAR',
+            password: 'password@12345'
+          },
+          {
+            firstname: 'another firstname goes here',
+            lastname: 'another lastname goes here',
+            email: 'anotheremail@gmail.com',
+            role: 'REGULAR',
+            password: 'anotherpassword@12345'
+          }
+        ]);
+
+        const payload = {
+          email: 'email@gmail.com',
+          password: 'no_such_password'
+        };
+        const response = await request(server)
+          .post('/api/v1/user/auth')
+          .send(payload);
+
+        expect(response).not.toBeNull();
+        expect(response.status).toBe(404);
+        expect(response.body).toHaveProperty('message', 'Invalid Email or Password');
+        expect(response.body).toHaveProperty('data');
+        expect(response.body.data).toMatchObject(payload);
+      }, 30000);
       //
       // it('should log in the user if the payload is authenticated and verified', () => {
       //
