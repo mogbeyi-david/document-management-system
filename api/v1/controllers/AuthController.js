@@ -16,7 +16,16 @@ exports.login = async function (req, res) {
   //Check if the user already exists
   const user = await UserModel.findOne({email: req.body.email});
   if (!user) {
-    res.status(HttpStatus.NOT_FOUND)
+    return res.status(HttpStatus.NOT_FOUND)
       .send({message: 'Invalid Email or Password', data: req.body});
+  }
+
+  try {
+    const validPassword = await bcrypt.compare(req.body.password, user.password);
+    if (!validPassword) {
+      return res.status(HttpStatus.NOT_FOUND).send({message: 'Invalid Email or Password', data: req.body});
+    }
+  } catch (exception) {
+    return res.status(HttpStatus.INTERNAL_SERVER_ERROR).send(exception.message);
   }
 };

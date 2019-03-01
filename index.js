@@ -35,7 +35,7 @@ app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 
 // => Use morgan for logging
-app.use(morgan('combined'));
+// app.use(morgan('combined'));
 
 app.use(express.json());
 

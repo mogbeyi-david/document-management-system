@@ -179,8 +179,6 @@ describe('/api/users', () => {
           .post('/api/v1/user/store')
           .send(payload);
 
-        console.log('RESPONSE: ', response.text);
-
         expect(response).not.toBeNull();
         expect(response.status).toBe(201);
         expect(response.body).toHaveProperty('message');
