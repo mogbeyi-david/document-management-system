@@ -236,7 +236,7 @@ describe('/api/users', () => {
 
         expect(response).not.toBeNull();
         expect(response.status).toBe(404);
-        expect(response.body).toHaveProperty('message', 'User not found');
+        expect(response.body).toHaveProperty('message', 'Invalid Email or Password');
         expect(response.body).toHaveProperty('data');
         expect(response.body.data).toMatchObject(payload);
       }, 30000);
