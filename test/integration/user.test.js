@@ -272,10 +272,38 @@ describe('/api/users', () => {
         expect(response.body).toHaveProperty('data');
         expect(response.body.data).toMatchObject(payload);
       }, 30000);
-      //
-      // it('should log in the user if the payload is authenticated and verified', () => {
-      //
-      // }, 30000);
+
+      it('should log in the user if the payload is authenticated and verified', async () => {
+
+        const testPayload = {
+          firstname: 'test firstname goes here',
+          lastname: 'test lastname goes here',
+          email: 'testemail@gmail.com',
+          password: 'test@password'
+        };
+        const testResult = await request(server)
+          .post('/api/v1/user/store')
+          .send(testPayload);
+
+        const payload = {
+          email: 'testemail@gmail.com',
+          password: 'test@password'
+        };
+        const response = await request(server)
+          .post('/api/v1/user/auth')
+          .send(payload);
+
+        console.log('RESPONSE: ', response.text);
+
+        expect(response).not.toBeNull();
+        expect(response.status).toBe(200);
+        expect(response.body).toHaveProperty('message', 'Login successful');
+        expect(response.body).toHaveProperty('data');
+        expect(response.body.data).toHaveProperty('_id');
+        expect(response.body.data).toHaveProperty('role');
+        expect(response.body.data).toHaveProperty('email', payload.email);
+        expect(response.body.data).toHaveProperty('role');
+      }, 30000);
 
     });
 
