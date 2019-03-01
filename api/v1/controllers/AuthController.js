@@ -25,6 +25,12 @@ exports.login = async function (req, res) {
     if (!validPassword) {
       return res.status(HttpStatus.NOT_FOUND).send({message: 'Invalid Email or Password', data: req.body});
     }
+
+    const token = user.generateJsonWebToken();
+    const data = _.pick(user, ['firstname', 'lastname', 'email', 'role', '_id']);
+    res.header('x-auth-token', token)
+      .status(HttpStatus.OK)
+      .send({message: 'Login successful', data: data});
   } catch (exception) {
     return res.status(HttpStatus.INTERNAL_SERVER_ERROR).send(exception.message);
   }
