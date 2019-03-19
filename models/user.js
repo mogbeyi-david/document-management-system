@@ -1,5 +1,8 @@
 import mongoose from 'mongoose';
+import jwt from 'jsonwebtoken';
+import 'dotenv/config';
 
+const jwtSecretKey = process.env.JWT_SECRET_KEY;
 const Schema = mongoose.Schema;
 
 // Define the user schema for creating the model
@@ -43,6 +46,17 @@ const userSchema = new Schema({
     default: Date.now
   }
 });
+
+userSchema.methods.generateJsonWebToken = function () {
+  return jwt.sign({
+    userId: this._id,
+    firstname: this.firstname,
+    lastname: this.lastname,
+    email: this.email,
+    role: this.role,
+    isAdmin: this.isAdmin
+  }, jwtSecretKey);
+};
 
 //Create the model
 const User = mongoose.model('User', userSchema);
