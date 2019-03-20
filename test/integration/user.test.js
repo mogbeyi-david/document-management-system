@@ -293,8 +293,6 @@ describe('/api/users', () => {
           .post('/api/v1/user/auth')
           .send(payload);
 
-        console.log('RESPONSE: ', response.text);
-
         expect(response).not.toBeNull();
         expect(response.status).toBe(200);
         expect(response.body).toHaveProperty('message', 'Login successful');
