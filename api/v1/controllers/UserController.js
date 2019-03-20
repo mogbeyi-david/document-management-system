@@ -8,6 +8,7 @@ import hasher from '../../../utils/hash';
 //Method to determine if an about-to-be-created user is unique, using the email in the payload
 async function isUserUnique(user) {
   const email = user.email;
+  // Check if there is an existing user with the email in the DB
   const existingUser = await UserModel.find({email: email});
   return existingUser.length <= 0;
 }
@@ -15,7 +16,7 @@ async function isUserUnique(user) {
 //Method to store the new user in the database
 exports.store = async function (req, res) {
 
-  // Check the payload for any improper data
+  // API level validation: Check the payload for any improper data using Joi
   const {error, value} = validateUser(req.body);
   if (error) {
     return res.status(HttpStatus.BAD_REQUEST)
@@ -41,6 +42,7 @@ exports.store = async function (req, res) {
       password: await hasher.hashPassword(req.body.password)
     });
     const result = await newUser.save();
+    // Use lodash to pick out ONLY the data to be sent back to the client as a response
     const response = _.pick(result, ['_id', 'firstname', 'lastname', 'email', 'role']);
     return res.status(HttpStatus.CREATED).send({
       message: 'User created successfully',
