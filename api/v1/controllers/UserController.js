@@ -55,7 +55,12 @@ exports.store = async function (req, res) {
 
 // Action to get all users
 exports.get = async function (req, res) {
-  return res.status(HttpStatus.OK).send({});
+  try {
+    const users = await UserModel.find({});
+    return res.status(HttpStatus.OK).send({message: 'Operation successful', data: users});
+  } catch (exception) {
+    return res.status(HttpStatus.INTERNAL_SERVER_ERROR).send({message: 'Operation failed', data: null});
+  }
 };
 export {
   isUserUnique
