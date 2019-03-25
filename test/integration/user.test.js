@@ -329,7 +329,40 @@ describe('/api/users', () => {
         expect(response.body.message).toMatch('Invalid');
         expect(response.body.data).toBe(null);
       });
+
+      it('should not get all the users for a user that is not an admin', async () => {
+        //First we create the payload for creating a non-admin new user
+        const payload = {
+          firstname: 'test firstname goes here',
+          lastname: 'test lastname goes here',
+          email: `${generateRandomTestData()}@gmail.com`,
+          password: 'test@password'
+        };
+
+        //Them we send that payload and actually create the user
+        const newUser = new UserModel(payload);
+        const result = await newUser.save();
+
+        //Generate the token to be put in the header of the request
+        const token = result.generateJsonWebToken();
+        const response = await request(server).get('/api/v1/users').set('x-auth-token', token);
+        expect(response).not.toBeNull();
+        expect(response.status).toBe(403);
+        expect(response.body).toHaveProperty('message');
+        expect(response.body).toHaveProperty('data');
+        expect(response.body.message).toMatch('Denied');
+        expect(response.body.data).toBe(null);
+      });
     });
   });
 
 });
+
+function generateRandomTestData() {
+  let randomTestData = '';
+  const symbols = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  for (let counter = 0; counter < 5; counter++) {
+    randomTestData += symbols.charAt(Math.floor(Math.random() * symbols.length));
+  }
+  return randomTestData;
+}
