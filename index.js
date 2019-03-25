@@ -11,7 +11,7 @@ import {userRouter} from './api/v1';
 const username = process.env.USERNAME;
 const password = process.env.PASSWORD;
 let database = process.env.DATABASE;
-if (process.env.ENVIRONMENT === 'TESTING') database = process.env.TEST_DATABASE;
+if (process.env.NODE_ENV === 'testing') database = process.env.TEST_DATABASE;
 const PORT = process.env.PORT || 3000;
 const app = express();
 
@@ -23,7 +23,7 @@ mongoose.connect(connectionString, {useNewUrlParser: true})
     console.log('Connected to remote DB successfully');
   })
   .catch((error) => {
-    console.log(error);
+    // Do something amazing with this error...
   });
 
 // Use middlewares
