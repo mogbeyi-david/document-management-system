@@ -307,9 +307,9 @@ describe('/api/users', () => {
 
   });
 
-  describe('/GET', ()=>{
-    describe('Getting All Users', ()=>{
-      it('should return a 401 error, a corresponding message and a data value of null when no token is provided', async ()=>{
+  describe('/GET', () => {
+    describe('Getting All Users', () => {
+      it('should return a 401 error, a corresponding message and a data value of null when no token is provided', async () => {
         const response = await request(server).get('/api/v1/users');
         expect(response).not.toBeNull();
         expect(response.status).toBe(401);
@@ -317,8 +317,19 @@ describe('/api/users', () => {
         expect(response.body).toHaveProperty('data');
         expect(response.body.message).toMatch('token');
         expect(response.body.data).toBe(null);
-      }, 30000)
-    })
+      }, 30000);
+
+      it('should return a 400 error if a wrong token is provided', async () => {
+        const token = '123456789';
+        const response = await request(server).get('/api/v1/users').set('x-auth-token', token);
+        expect(response).not.toBeNull();
+        expect(response.status).toBe(400);
+        expect(response.body).toHaveProperty('message');
+        expect(response.body).toHaveProperty('data');
+        expect(response.body.message).toMatch('Invalid');
+        expect(response.body.data).toBe(null);
+      });
+    });
   });
 
 });
