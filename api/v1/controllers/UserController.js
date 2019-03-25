@@ -13,7 +13,7 @@ async function isUserUnique(user) {
   return existingUser.length <= 0;
 }
 
-//Method to store the new user in the database
+//Action to store the new user in the database
 exports.store = async function (req, res) {
 
   // API level validation: Check the payload for any improper data using Joi
@@ -53,7 +53,10 @@ exports.store = async function (req, res) {
   }
 };
 
-
+// Action to get all users
+exports.get = async function (req, res) {
+  return res.status(HttpStatus.OK).send({});
+};
 export {
   isUserUnique
 };
