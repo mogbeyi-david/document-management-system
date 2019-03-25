@@ -330,7 +330,7 @@ describe('/api/users', () => {
         expect(response.body.data).toBe(null);
       });
 
-      it('should not get all the users for a user that is not an admin', async () => {
+      it('should not get all users for a user that is not an admin', async () => {
         //First we create the payload for creating a non-admin new user
         const payload = {
           firstname: 'test firstname goes here',
@@ -352,6 +352,25 @@ describe('/api/users', () => {
         expect(response.body).toHaveProperty('data');
         expect(response.body.message).toMatch('Denied');
         expect(response.body.data).toBe(null);
+      });
+      it('should get all users for a user that is an admin', async () => {
+        //First we create the payload for creating a non-admin new user
+        const payload = {
+          firstname: 'test firstname goes here',
+          lastname: 'test lastname goes here',
+          email: `${generateRandomTestData()}@gmail.com`,
+          password: 'test@password',
+          role: 'ADMIN'
+        };
+
+        //Them we send that payload and actually create the user
+        const newUser = new UserModel(payload);
+        const result = await newUser.save();
+
+        //Generate the token to be put in the header of the request
+        const token = result.generateJsonWebToken();
+        const response = await request(server).get('/api/v1/users').set('x-auth-token', token);
+        expect(response.status).toBe(200);
       });
     });
   });
