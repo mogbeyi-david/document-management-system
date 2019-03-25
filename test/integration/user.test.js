@@ -102,7 +102,7 @@ describe('/api/users', () => {
           password: 'testpassword@12345'
         };
         const response = await request(server)
-          .post('/api/v1/user/store')
+          .post('/api/v1/users/store')
           .send(payload);
 
         expect(response).not.toBeNull();
@@ -122,7 +122,7 @@ describe('/api/users', () => {
           password: 'test'
         };
         const response = await request(server)
-          .post('/api/v1/user/store')
+          .post('/api/v1/users/store')
           .send(payload);
 
         expect(response).not.toBeNull();
@@ -157,7 +157,7 @@ describe('/api/users', () => {
           password: 'test@password'
         };
         const response = await request(server)
-          .post('/api/v1/user/store')
+          .post('/api/v1/users/store')
           .send(payload);
 
         expect(response).not.toBeNull();
@@ -176,7 +176,7 @@ describe('/api/users', () => {
           password: 'test@password'
         };
         const response = await request(server)
-          .post('/api/v1/user/store')
+          .post('/api/v1/users/store')
           .send(payload);
 
         expect(response).not.toBeNull();
@@ -195,7 +195,7 @@ describe('/api/users', () => {
           email: 'testemail@gmail.com'
         };
         const response = await request(server)
-          .post('/api/v1/user/auth')
+          .post('/api/v1/users/auth')
           .send(payload);
 
         expect(response).not.toBeNull();
@@ -229,7 +229,7 @@ describe('/api/users', () => {
           password: 'no_such_password'
         };
         const response = await request(server)
-          .post('/api/v1/user/auth')
+          .post('/api/v1/users/auth')
           .send(payload);
 
         expect(response).not.toBeNull();
@@ -263,7 +263,7 @@ describe('/api/users', () => {
           password: 'no_such_password'
         };
         const response = await request(server)
-          .post('/api/v1/user/auth')
+          .post('/api/v1/users/auth')
           .send(payload);
 
         expect(response).not.toBeNull();
@@ -282,7 +282,7 @@ describe('/api/users', () => {
           password: 'test@password'
         };
         const testResult = await request(server)
-          .post('/api/v1/user/store')
+          .post('/api/v1/users/store')
           .send(testPayload);
 
         const payload = {
@@ -290,7 +290,7 @@ describe('/api/users', () => {
           password: 'test@password'
         };
         const response = await request(server)
-          .post('/api/v1/user/auth')
+          .post('/api/v1/users/auth')
           .send(payload);
 
         expect(response).not.toBeNull();
@@ -305,6 +305,16 @@ describe('/api/users', () => {
 
     });
 
+  });
+
+  describe('/GET', ()=>{
+    describe('Getting All Users', ()=>{
+      it('Should return a 401 error, a corresponding message and a data value of null when no token is provided', async ()=>{
+        const response = await request(server).get('/api/v1/users');
+        expect(response).not.toBeNull();
+        expect(response.status).toBe(401);
+      }, 30000)
+    })
   });
 
 });
