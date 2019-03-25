@@ -309,10 +309,14 @@ describe('/api/users', () => {
 
   describe('/GET', ()=>{
     describe('Getting All Users', ()=>{
-      it('Should return a 401 error, a corresponding message and a data value of null when no token is provided', async ()=>{
+      it('Should return a 401 error, a corresponding message and a data value of null when the user is not logged in', async ()=>{
         const response = await request(server).get('/api/v1/users');
         expect(response).not.toBeNull();
         expect(response.status).toBe(401);
+        expect(response.body).toHaveProperty('message');
+        expect(response.body).toHaveProperty('data');
+        expect(response.body.message).toMatch('token');
+        expect(response.body.data).toBe(null);
       }, 30000)
     })
   });
